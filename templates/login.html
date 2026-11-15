@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Acceso | Mis Gastos</title>
+</head>
+<body>
+    <h1>Mis Gastos</h1>
+    <h2>Iniciar sesión</h2>
+
+    {% with mensajes = get_flashed_messages() %}
+        {% for mensaje in mensajes %}
+            <p>{{ mensaje }}</p>
+        {% endfor %}
+    {% endwith %}
+
+    <form method="POST">
+        <label>Usuario:</label>
+        <input type="text" name="usuario" required>
+
+        <br><br>
+
+        <label>Contraseña:</label>
+        <input type="password" name="clave" required>
+
+        <br><br>
+
+        <button type="submit">Ingresar</button>
+    </form>
+</body>
+</html>

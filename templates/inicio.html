@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mis Gastos | Panel principal</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+
+<body>
+
+    <h1>Mis Gastos</h1>
+
+    <p style="text-align:center;">
+        Bienvenido al sistema de control de gastos.
+    </p>
+
+    <p style="text-align:right;">
+        <a href="{{ url_for('salir') }}">Cerrar sesión</a>
+    </p>
+
+    <hr>
+
+    <h2>Registrar nuevo gasto</h2>
+
+    <form method="POST" action="{{ url_for('registrar') }}">
+
+        <label>Fecha:</label><br>
+        <input type="date" name="fecha" required>
+
+        <br><br>
+
+        <label>Descripción:</label><br>
+        <input type="text" name="descripcion"
+               placeholder="Ej. Compra de alimentos" required>
+
+        <br><br>
+
+        <label>Monto (S/):</label><br>
+        <input type="number" name="monto"
+               step="0.01" min="0.01"
+               placeholder="0.00" required>
+
+        <br><br>
+
+        <button type="submit">Registrar gasto</button>
+
+    </form>
+
+    <h2>Historial de gastos</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Descripción</th>
+                <th>Monto</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for gasto in gastos %}
+
+            <tr>
+                <td>{{ gasto.fecha }}</td>
+
+                <td>{{ gasto.descripcion }}</td>
+
+                <td>
+                    S/ {{ "%.2f"|format(gasto.monto) }}
+                </td>
+
+                <td>
+                    <a href="{{ url_for('editar', id=gasto.id) }}">
+                        Editar
+                    </a>
+
+                    <form method="POST"
+                          action="{{ url_for('eliminar', id=gasto.id) }}"
+                          style="display:inline; padding:0; box-shadow:none;"
+                          onsubmit="return confirm('¿Eliminar este gasto?')">
+
+                        <button type="submit">Eliminar</button>
+
+                    </form>
+                </td>
+            </tr>
+
+            {% else %}
+
+            <tr>
+                <td colspan="4">
+                    No hay gastos registrados.
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+    <h2>Reporte de gastos</h2>
+
+    <h3>
+        Total acumulado:
+        S/ {{ "%.2f"|format(total) }}
+    </h3>
+
+</body>
+</html>
